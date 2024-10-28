@@ -6,9 +6,11 @@ import subprocess
 # ============================
 # Configuration (modifiable)
 # ============================
+
+
 EXCLUDED_FILES = {'international_names_with_rooms_1000.csv'} 
 EXCLUDED_DIRS = {'.venv', 'dist-info'} 
-INCLUDED_EXTENSIONS = ['.py', '.txt']  # Keeping it as a list
+INCLUDED_EXTENSIONS = ['.py', '.txt']
 
 # ============================
 # Utility Functions
@@ -16,11 +18,9 @@ INCLUDED_EXTENSIONS = ['.py', '.txt']  # Keeping it as a list
 
 def is_excluded_file(file_name, dir_path):
     """Check if a file or directory should be excluded based on predefined criteria."""
-    full_path = os.path.join(dir_path, file_name)  # Construct the full path
-    return (
-        file_name in EXCLUDED_FILES or
-        any(os.path.commonpath([full_path, os.path.join(dir_path, excluded_dir)]) == os.path.join(dir_path, excluded_dir) for excluded_dir in EXCLUDED_DIRS)
-    )
+    # Split the full path into components and check if any component is in EXCLUDED_DIRS
+    path_parts = os.path.normpath(dir_path).split(os.sep)
+    return any(part in EXCLUDED_DIRS for part in path_parts)
 
 def is_included_extension(file_name):
     """Check if a file has an extension that should be included."""
@@ -43,9 +43,9 @@ def print_summary(summary, output_file, base_dir):
     output_file_path = os.path.abspath(output_file)  # Get the absolute path of the output file
 
     print('═' * 50)
-    print(f'Codebase "{base_name}" has been transformed into "{output_file}". You’re welcome buddy.')
+    print(f'Codebase "{base_name}" has been transformed into "{output_file}". You are welcome buddy.')
     print(f'Total folders: {summary["folders"]}. You must really enjoy organizing things, huh?')
-    print(f'Files collected: {summary["files"]}. That’s *file-tastic*')
+    print(f'Files collected: {summary["files"]}. That is *file-tastic*')
     print(f'Total lines: {summary["lines"]}. Yikes!')
     print(f'Time taken? Just {summary["time"]:.2f} seconds - light work!')
     print(f'My masterpiece can be found here: {output_file_path}. Surely there is no mistakes, right?')
@@ -59,14 +59,13 @@ def print_summary(summary, output_file, base_dir):
 
 def process_file(outfile, filename, root, summary):
     """Check if the file is valid, then write its content to the output file."""
-    if is_included_extension(filename):
+    if is_included_extension(filename) and not is_excluded_file(filename, root):
         file_path = os.path.join(root, filename)
         outfile.write(f'<file path="{file_path}">\n')  # Open tag with file path
         summary['lines'] += write_file_content(outfile, file_path)  # Add lines from the file
         outfile.write(f'\n</file path="{file_path}">\n\n')  # Close tag with separation
         summary['files'] += 1  # Increment file count
 
-# Main Code Collection Logic
 def collect_code(base_dir, output_file):
     """Collect code from the specified base directory and write to an output file."""
     summary = {'folders': 0, 'files': 0, 'lines': 0, 'time': 0}
@@ -75,13 +74,14 @@ def collect_code(base_dir, output_file):
     # Open the output file and start writing the codebase
     with open(output_file, 'w', encoding='utf-8') as outfile:
         for root, dirs, files in os.walk(base_dir):
+            # Remove excluded directories from dirs list to prevent walking into them
+            dirs[:] = [d for d in dirs if d not in EXCLUDED_DIRS]
+            
             if root == base_dir:
                 summary['folders'] += len(dirs)  # Root directory is not counted. Increment for subdirectories.
 
-            # Process each file in the current directory based on the predefined criteria
+            # Process each file in the current directory
             for filename in files:
-                if is_excluded_file(filename, root):
-                    continue
                 process_file(outfile, filename, root, summary)
 
     # Calculate the time taken and print summary
