@@ -91,6 +91,7 @@ def collect_code(base_dir, output_file):
 def open_output_file(file_path):
     """Open the output file using the default application and delete it after closing."""
     try:
+        # Start the appropriate process to open the file based on the operating system
         if sys.platform == "win32":
             process = subprocess.Popen(['start', '', file_path], shell=True)
         elif sys.platform == "darwin":
@@ -98,8 +99,11 @@ def open_output_file(file_path):
         else:
             process = subprocess.Popen(['xdg-open', file_path])
 
-        process.wait()  # Wait for the file to be closed
-        os.remove(file_path)  # Delete the file afterward
+        # Wait for the file to be closed before proceeding
+        process.wait()
+
+        # This code only runs after the user closes the file/application
+        os.remove(file_path)
         print(f"The file '{file_path}' has been deleted after closing.")
     except Exception as e:
         print(f"Could not open or delete the output file: {e}")
