@@ -96,147 +96,99 @@ Feel free to modify the exclusion lists as needed in 'collect_code.py'.
 
 ---
 
-## Using `collect_code` as a Custom Terminal Command
+## Setting up `collect_code` as a Terminal Command
 
-### Method 1: Using an Alias
+This guide will help you set up `collect_code` as a system-wide command, so you can invoke its magic from any directory on your system!
 
-1.  **Open Terminal**:
-    
-    *   Launch the Terminal application.
-2.  **Open Your Shell Configuration File**:
-    
-    *   Since you’re likely using `zsh` by default on macOS Sonoma, open your `.zshrc` file:
-    
-    ```bash
-    nano ~/.zshrc
-    ```
-    
-3.  **Add the Alias**:
-    
-    *   At the bottom of the file, add the alias. Make sure to replace `/path/to/your/script` with the full path to your `collect_code.py` script. For example:
-    
-    ```bash
-    alias collect_code='python3 /path/to/your/scriptcollect_code.py'
-    ```
-    
-4.  **Save and Exit**:
-    
-    *   Press `CTRL + X`, then `Y`, and finally `Enter` to save and exit.
-5.  **Apply Changes**:
-    
-    *   Load your updated `.zshrc` into the current terminal session:
-    
-    ```bash
-    source ~/.zshrc
-    ```
-    
-6.  **Using the Alias**:
-    
-    *   You can now run the command from anywhere in your terminal:
-    
-    ```bash
-    collect_code <project_directory> <output_file>
-    ```
-    
-    Example:
-    
-    ```bash
-    collect_code ../ReservationService codebase.txt
-    ```
+### Prerequisites
 
-### Method 2: Creating a Shell Script
+- [Python 3](https://www.python.org/downloads/) (3.7 or higher recommended)
+- [Git](https://git-scm.com/downloads) (for downloading the script)
+- `collect_code.py` script from the [code_collector repository](https://github.com/marcus-rk/code_collector.git)
 
-1.  **Create a Directory for Scripts (Optional)**:
-    
-    *   If you don’t already have a directory for scripts, you can create one. A common practice is to use `~/bin`.
-    
-    ```bash
-    mkdir -p ~/bin
-    ```
-    
-2.  **Create the Shell Script**:
-    
-    *   Navigate to the `~/bin` directory:
-    
-    ```bash
-    cd ~/bin
-    ```
-    
-    *   Create a new shell script:
-    
-    ```bash
-    nano collect_code
-    ```
-    
-3.  **Write the Shell Script**:
-    
-    *   Add the following lines to the `collect_code` file. Remember to replace the path accordingly:
-    
-    ```bash
-    #!/bin/bash
-    python3 /Users/marcus_rk/Softwarearkitektur/Hotel_Kong_Arthur/code_collector/collect_code.py "$@"
-    ```
-    
-4.  **Save and Exit**:
-    
-    *   Save your changes (CTRL + X, Y, Enter).
-5.  **Make the Script Executable**:
-    
-    *   Change the permissions to make the script executable:
-    
-    ```bash
-    chmod +x collect_code
-    ```
-    
-6.  **Add `~/bin` to Your PATH (if not already)**:
-    
-    *   Open your `.zshrc` file again:
-    
-    ```bash
-    nano ~/.zshrc
-    ```
-    
-    *   Add the following line if `~/bin` isn’t already in your PATH:
-    
-    ```bash
-    export PATH="$HOME/bin:$PATH"
-    ```
-    
-7.  **Apply Changes**:
-    
-    *   Load your updated `.zshrc`:
-    
-    ```bash
-    source ~/.zshrc
-    ```
-    
-8.  **Using the Shell Script**:
-    
-    *   Now you can execute the command from any terminal session like this:
-    
-    ```bash
-    collect_code <project_directory> <output_file>
-    ```
-    
-    Example:
-    
-    ```bash
-    collect_code ../ReservationService codebase.txt
-    ```
+#### Verifying Prerequisites
 
-### Testing the Command
+Make sure your installations are working by running:
+```bash
+python3 --version
+git --version
+```
 
-After you set up either the alias or the shell script, test it to ensure it works correctly:
+### macOS Setup
 
-1.  Open a new terminal session.
-    
-2.  Run the command:
-    
-    ```bash
-    collect_code ../ReservationService codebase.txt
-    ```
+#### 1. Initial Setup (One Command)
 
-### To-Do: **The Great Code Cleanup**
+```bash
+# Create bin directory, add to PATH, and apply changes
+mkdir -p ~/bin && \
+echo 'export PATH="$HOME/bin:$PATH"' >> ~/.zshrc && \
+echo 'alias collect_code="python3 ~/bin/collect_code.py"' >> ~/.zshrc && \
+source ~/.zshrc
+```
+
+#### 2. Install Script
+
+```bash
+# Clone repo, move script, and make executable
+git clone https://github.com/marcus-rk/code_collector.git && \
+mv code_collector/collect_code.py ~/bin/ && \
+chmod +x ~/bin/collect_code.py && \
+rm -rf code_collector
+```
+
+That's it! You can now use `collect_code` from anywhere.
+
+### Windows Setup
+
+#### 1. Initial Setup (PowerShell as Administrator)
+
+```powershell
+# Create Scripts directory and add to PATH
+mkdir $HOME\Scripts
+[Environment]::SetEnvironmentVariable(
+    "Path",
+    [Environment]::GetEnvironmentVariable("Path", "User") + ";%USERPROFILE%\Scripts",
+    "User"
+)
+```
+
+#### 2. Install Script and Create Batch File
+
+```powershell
+# Clone repo, move script, create batch file
+git clone https://github.com/marcus-rk/code_collector.git
+move code_collector\collect_code.py $HOME\Scripts\
+echo @echo off > $HOME\Scripts\collect_code.bat
+echo python "%USERPROFILE%\Scripts\collect_code.py" %* >> $HOME\Scripts\collect_code.bat
+Remove-Item -Recurse -Force code_collector
+```
+
+Restart your terminal for changes to take effect.
+
+## Testing the Command
+
+The command works the same way on both operating systems:
+
+```bash
+collect_code  
+```
+
+Example:
+```bash
+collect_code ../MyProject codebase.txt
+```
+
+### Troubleshooting
+
+If the command isn't recognized after installation:
+1. Make sure you've restarted your terminal
+2. Verify Python is in your system PATH (you can add it during [Python installation](https://docs.python.org/3/using/windows.html#installation-steps))
+3. Check if the script has proper permissions (macOS)
+4. Ensure the batch file was created correctly (Windows)
+
+---
+
+### Future features: **The Great Code Cleanup**
 
 - ✨ **Auto-Delete Feature** – After you’re done with the output file, it’ll vanish like magic, leaving your workspace spotless. Access your insights instantly, minus the digital clutter!
 
