@@ -122,12 +122,13 @@ def open_output_file(file_path):
 if __name__ == "__main__":
     # Check if the project directory is provided as an argument
     if len(sys.argv) < 2:
-        print("Usage: python3 collect_code.py <project_directory> [<output_file>]")
+        print("Usage: python3 collect_code.py <project_directory>  (without command)")
+        print("Usage: wrapitup <project_directory>  (with command)")
         sys.exit(1)
     
     # Get the project directory and output filename from the command line arguments
     project_directory = sys.argv[1].strip()
-    output_filename = sys.argv[2].strip() if len(sys.argv) == 3 else 'codebase.txt' # Default output file name is codebase.txt
+    output_filename = 'collected_code.txt'
 
     # Collect code from the project directory and write to the output file
     collect_code(project_directory, output_filename)
