@@ -74,6 +74,11 @@ EXCLUDED_DIRS = {
     '.android',              # Android SDK artifacts
     '.kotlin',               # Kotlin-related caches and configuration
     'build',                 # Build artifacts for Android and Java projects
+    'outputs',               # Output directories for Android builds
+    'intermediates',        # Intermediate files for Android builds
+    'generated',           # Generated files for Android builds
+    'bin', 'obj',  # Common for other build systems (e.g., C#/.NET)
+    '.gradle', '.cxx',  # Additional Android/Java build directories
 
     # Other IDE and system-specific caches
     '.expo', '.expo-shared', # Expo for React Native
