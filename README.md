@@ -67,6 +67,149 @@ By default, the script excludes:
 
 Feel free to modify the exclusion lists as needed in 'collect_code.py'.
 
+---
+
+## Using `collect_code` as a Custom Terminal Command
+
+### Method 1: Using an Alias
+
+1.  **Open Terminal**:
+    
+    *   Launch the Terminal application.
+2.  **Open Your Shell Configuration File**:
+    
+    *   Since you’re likely using `zsh` by default on macOS Sonoma, open your `.zshrc` file:
+    
+    ```bash
+    nano ~/.zshrc
+    ```
+    
+3.  **Add the Alias**:
+    
+    *   At the bottom of the file, add the alias. Make sure to replace `/path/to/your/script` with the full path to your `collect_code.py` script. For example:
+    
+    ```bash
+    alias collect_code='python3 /Users/marcus_rk/Softwarearkitektur/Hotel_Kong_Arthur/code_collector/collect_code.py'
+    ```
+    
+4.  **Save and Exit**:
+    
+    *   Press `CTRL + X`, then `Y`, and finally `Enter` to save and exit.
+5.  **Apply Changes**:
+    
+    *   Load your updated `.zshrc` into the current terminal session:
+    
+    ```bash
+    source ~/.zshrc
+    ```
+    
+6.  **Using the Alias**:
+    
+    *   You can now run the command from anywhere in your terminal:
+    
+    ```bash
+    collect_code <project_directory> <output_file>
+    ```
+    
+    Example:
+    
+    ```bash
+    collect_code ../ReservationService codebase.txt
+    ```
+
+### Method 2: Creating a Shell Script
+
+1.  **Create a Directory for Scripts (Optional)**:
+    
+    *   If you don’t already have a directory for scripts, you can create one. A common practice is to use `~/bin`.
+    
+    ```bash
+    mkdir -p ~/bin
+    ```
+    
+2.  **Create the Shell Script**:
+    
+    *   Navigate to the `~/bin` directory:
+    
+    ```bash
+    cd ~/bin
+    ```
+    
+    *   Create a new shell script:
+    
+    ```bash
+    nano collect_code
+    ```
+    
+3.  **Write the Shell Script**:
+    
+    *   Add the following lines to the `collect_code` file. Remember to replace the path accordingly:
+    
+    ```bash
+    #!/bin/bash
+    python3 /Users/marcus_rk/Softwarearkitektur/Hotel_Kong_Arthur/code_collector/collect_code.py "$@"
+    ```
+    
+4.  **Save and Exit**:
+    
+    *   Save your changes (CTRL + X, Y, Enter).
+5.  **Make the Script Executable**:
+    
+    *   Change the permissions to make the script executable:
+    
+    ```bash
+    chmod +x collect_code
+    ```
+    
+6.  **Add `~/bin` to Your PATH (if not already)**:
+    
+    *   Open your `.zshrc` file again:
+    
+    ```bash
+    nano ~/.zshrc
+    ```
+    
+    *   Add the following line if `~/bin` isn’t already in your PATH:
+    
+    ```bash
+    export PATH="$HOME/bin:$PATH"
+    ```
+    
+7.  **Apply Changes**:
+    
+    *   Load your updated `.zshrc`:
+    
+    ```bash
+    source ~/.zshrc
+    ```
+    
+8.  **Using the Shell Script**:
+    
+    *   Now you can execute the command from any terminal session like this:
+    
+    ```bash
+    collect_code <project_directory> <output_file>
+    ```
+    
+    Example:
+    
+    ```bash
+    collect_code ../ReservationService codebase.txt
+    ```
+
+### Testing the Command
+
+After you set up either the alias or the shell script, test it to ensure it works correctly:
+
+1.  Open a new terminal session.
+    
+2.  Run the command:
+    
+    ```bash
+    collect_code ../ReservationService codebase.txt
+    ```
+
+
 ## License
 
 This project is licensed under the MIT License. See the [LICENSE](LICENSE) file for details.
