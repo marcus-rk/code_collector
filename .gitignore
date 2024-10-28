@@ -36,4 +36,4 @@ coverage.xml
 *.out
 *.pdb
 *.pyo
-
+codebase.txt
