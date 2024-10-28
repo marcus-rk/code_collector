@@ -1,14 +1,17 @@
-# Code Collector
+# Code Collector - Giving LLMs the XML They Deserve
 
 ![Python](https://img.shields.io/badge/python-3670A0?style=for-the-badge&logo=python&logoColor=ffdd54) 
 
 ## Overview
 
-**Code Collector** is a Python script designed to streamline the process of compiling source code files from a specified project directory into a single text file formatted with **XML tags**.
+**Code Collector** is a Python script that makes wrangling your source code a breeze! It compiles files from your project directory into a single text file, all wrapped up in **XML tags** for better readability by LLMs. 
 
-- The idea for Code Collector emerged during a frustrating moment when I realized how much **time and energy** it takes to prompt language models (LLMs) like ChatGPT or Claude AI with code snippets and projects. 
+- This whole idea sprouted from a frustrating moment when I realized how much **time and energy** it takes to feed language models (LLMs) like ChatGPT 4o or Claude AI Sonna with code snippets from projects that have a "great" folder structure. Sure, it’s nice to have everything organized, but good luck copying and pasting all that code from multiple folders!
 
-- This project aims to enhance the capabilities of LLMs by providing a structured format for analyzing and processing entire codebases. 
+- With **Code Collector**, I aimed to give LLMs the organized, structured input they need to truly shine. It’s all about making the codebase easier to analyze and process, so you can focus on the fun stuff—like coding!
+
+And here’s the best part: you can run **Code Collector** right from your terminal like a coding wizard! 🪄✨
+ 
 
 ## Features
 
@@ -16,6 +19,8 @@
 - **Exclusion Filters**: Easily configure which files and directories to exclude.
 - **File Output**: Generates a structured text file with the contents of the collected code.
 - **Summary Report**: At the end of the process, a summary is printed that includes the total number of folders, files, lines of code, and the time taken for the collection.
+
+---
 
 ## 🛠️ Requirements
 
@@ -45,6 +50,9 @@ INCLUDED_EXTENSIONS = {'.py', '.txt'}                         # File types to in
 - **EXCLUDED_FILES**: Add any specific filenames that should be ignored during the collection.
 - **EXCLUDED_DIRS**: Specify any directory names that should be excluded (e.g., virtual environments).
 - **INCLUDED_EXTENSIONS**: List file extensions that should be included in the output.
+  - *Note*: You can customize this to include other programming languages by changing the extensions. For example, use `INCLUDED_EXTENSIONS = {'.java', '.kt', '.js'}` for Java, Kotlin, or JavaScript files.
+
+---
 
 ## Usage
 
