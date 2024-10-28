@@ -1,5 +1,9 @@
 # Code Collector
 
+![Python](https://img.shields.io/badge/python-3670A0?style=for-the-badge&logo=python&logoColor=ffdd54) ![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)
+
+
+
 ## Overview
 
 **Code Collector** is a Python script created to simplify the process of compiling source code files from a specified project directory into a single text file formatted with XML tags. The primary goal of this project is to enhance the ability of language models (LLMs) like ChatGPT and Claude AI to understand and process an entire codebase effectively. By organizing the code into a structured format, it becomes easier to analyze, document, and share snippets, while also allowing for the exclusion of unnecessary files.
