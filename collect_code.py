@@ -1,7 +1,7 @@
 import os
 import sys
 import time
-import subprocess  # Import subprocess for opening files
+import subprocess
 
 # ============================
 # Configuration (modifiable)
@@ -34,7 +34,7 @@ def write_file_content(outfile, file_path):
         return 0  # Return 0 lines if the file cannot be read
 
 def print_summary(summary, output_file, base_dir):
-    """Print the summary of the collection in a readable format."""
+    """Print the summary of the collection in a readable format and open the output file."""
     base_name = os.path.basename(os.path.abspath(base_dir))  # Get only the last component of the full path
     output_file_path = os.path.abspath(output_file)  # Get the absolute path of the output file
 
@@ -44,23 +44,10 @@ def print_summary(summary, output_file, base_dir):
     print(f'Files collected: {summary["files"]}. That’s *file-tastic*')
     print(f'Total lines: {summary["lines"]}. Yikes!')
     print(f'Time taken? Just {summary["time"]:.2f} seconds - light work!')
-    print(f'My masterpiece can be found here: {output_file_path}. Surely there are no mistakes, right?')
+    print(f'My masterpiece can be found here: {output_file_path}. Surely there is no mistakes, right?')
     print('═' * 50)
 
-    # Open the output file after processing
     open_output_file(output_file_path)
-
-def open_output_file(file_path):
-    """Open the output file using the default application for the file type."""
-    try:
-        if sys.platform == "win32":  # Windows
-            os.startfile(file_path)
-        elif sys.platform == "darwin":  # macOS
-            subprocess.run(["open", file_path])
-        else:  # Linux and other Unix-like systems
-            subprocess.run(["xdg-open", file_path])
-    except Exception as e:
-        print(f"Could not open the output file: {e}")
 
 # ============================
 # Main Code Collection Logic
@@ -96,6 +83,22 @@ def collect_code(base_dir, output_file):
     # Calculate the time taken and print summary
     summary['time'] = time.time() - start_time
     print_summary(summary, output_file, base_dir)
+
+def open_output_file(file_path):
+    """Open the output file using the default application and delete it after closing."""
+    try:
+        if sys.platform == "win32":
+            process = subprocess.Popen(['start', '', file_path], shell=True)
+        elif sys.platform == "darwin":
+            process = subprocess.Popen(['open', file_path])
+        else:
+            process = subprocess.Popen(['xdg-open', file_path])
+
+        process.wait()  # Wait for the file to be closed
+        os.remove(file_path)  # Delete the file afterward
+        print(f"The file '{file_path}' has been deleted after closing.")
+    except Exception as e:
+        print(f"Could not open or delete the output file: {e}")
 
 # ============================
 # Main Entry Point
