@@ -11,7 +11,6 @@
 - With **Code Collector**, I aimed to give LLMs the organized, structured input they need to truly shine. It’s all about making the codebase easier to analyze and process, so you can focus on the fun stuff—like coding!
 
 And here’s the best part: you can run **Code Collector** right from your terminal like a coding wizard! 🪄✨
- 
 
 ## Features
 
