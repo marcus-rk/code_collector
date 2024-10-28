@@ -1,0 +1,329 @@
+<file path="../ReservationService/requirements.txt">
+blinker==1.8.2
+certifi==2024.8.30
+charset-normalizer==3.4.0
+click==8.1.7
+Flask==3.0.3
+idna==3.10
+itsdangerous==2.2.0
+Jinja2==3.1.4
+MarkupSafe==3.0.2
+numpy==2.1.2
+pandas==2.2.3
+python-dateutil==2.9.0.post0
+pytz==2024.2
+requests==2.32.3
+six==1.16.0
+tzdata==2024.2
+urllib3==2.2.3
+Werkzeug==3.0.6
+
+</file>
+
+<file path="../ReservationService/app.py">
+from flask import Flask, jsonify
+from api.reservation_routes import reservation_routes
+from database.initialization import init_db
+
+app = Flask(__name__)
+
+# Register blueprints for modular endpoints
+app.register_blueprint(reservation_routes, url_prefix='/api/v1/reservations')
+
+# Error handler for 404 Not Found
+@app.errorhandler(404)
+def not_found(error):
+    return jsonify({"error": "Endpoint not found"}), 404
+
+# Error handler for 500 Internal Server Error
+@app.errorhandler(500)
+def internal_error(error):
+    return jsonify({"error": "Internal server error"}), 500
+
+# Initializes database and runs Flask app on port 5003
+if __name__ == '__main__':
+    init_db()
+    app.run(host='0.0.0.0', port=5003, debug=True)
+</file>
+
+<file path="../ReservationService/database/initialization.py">
+import pandas as pd
+import os
+from datetime import datetime, timedelta
+from database.connection import create_connection
+
+# Map of room type names to their room IDs
+room_type_map = {
+    "Spa Executive": 1,
+    "Grand Lit": 2,
+    "Standard Single": 3,
+    "LOFT Suite": 4,
+    "Suite": 5,
+    "Standard Double": 6,
+    "Junior Suite": 7,
+    "Superior Double": 8
+}
+
+def init_db():
+    _create_tables()
+    if not _check_data_exists():
+        _read_csv_data()
+    print("Database initialized successfully.")
+
+def _create_tables():
+    connection = create_connection()
+    cursor = connection.cursor()
+    
+    cursor.execute('''CREATE TABLE IF NOT EXISTS Reservations (
+        id INTEGER PRIMARY KEY,
+        guest_id INTEGER NOT NULL,
+        room_id INTEGER NOT NULL,
+        season_id INTEGER NOT NULL,
+        start_date TEXT NOT NULL CHECK (start_date >= CURRENT_DATE),
+        end_date TEXT NOT NULL CHECK (end_date >= start_date),
+        price REAL NOT NULL CHECK (price >= 0)
+    )''')
+    
+    cursor.execute('''CREATE INDEX IF NOT EXISTS guest_id_index ON Reservations (guest_id)''')
+    cursor.execute('''CREATE INDEX IF NOT EXISTS room_id_index ON Reservations (room_id)''')
+    
+    connection.commit()
+    connection.close()
+
+def _check_data_exists():
+    connection = create_connection()
+    cursor = connection.cursor()
+    cursor.execute("SELECT COUNT(*) FROM Reservations")
+    count = cursor.fetchone()[0]
+    connection.close()
+    return count > 0
+
+def _get_season_id(season):
+    season_mapping = {'low': 1, 'mid': 2, 'high': 3}
+    return season_mapping.get(season.lower(), 1)
+
+def _generate_dates(days_rented):
+    start_date = datetime.now().date()
+    end_date = start_date + timedelta(days=int(days_rented))
+    return start_date.isoformat(), end_date.isoformat()
+
+def _read_csv_data():
+    csv_path = os.path.join(os.path.dirname(os.path.dirname(__file__)), 
+                           'csv/international_names_with_rooms_1000.csv')
+    data = pd.read_csv(csv_path)
+    
+    connection = create_connection()
+    cursor = connection.cursor()
+    
+    guest_id = 1
+    
+    try:
+        for _, row in data.iterrows():
+            start_date, end_date = _generate_dates(row['Days Rented'])
+            season_id = _get_season_id(row['Season'])
+            
+            # Determine room_id from type_name
+            room_type_name = row['Room Type']  # Adjust column name as per CSV
+            room_id = room_type_map.get(room_type_name)
+
+            if room_id is None:
+                print(f"Error: Room type '{room_type_name}' not found.")
+                continue
+            
+            cursor.execute('''
+                INSERT INTO Reservations (
+                    guest_id, room_id, season_id, 
+                    start_date, end_date, price
+                ) VALUES (?, ?, ?, ?, ?, ?)
+            ''', (
+                guest_id, 
+                room_id,
+                season_id,
+                start_date,
+                end_date,
+                float(row['Price'])
+            ))
+            
+            guest_id += 1
+        
+        connection.commit()
+    except Exception as e:
+        print(f"Error inserting data: {e}")
+        connection.rollback()
+    connection.close()
+
+</file>
+
+<file path="../ReservationService/database/connection.py">
+import sqlite3
+
+# Creates database connection with row factory
+def create_connection():
+    connection = sqlite3.connect('database/reservation_inventory.db')
+    connection.row_factory = sqlite3.Row
+    return connection
+
+</file>
+
+<file path="../ReservationService/repositories/reservation_repository.py">
+from database.connection import create_connection
+
+# Get all reservations with days rented (end_date - start_date)
+def db_get_reservations():
+    connection = create_connection()
+
+    cursor = connection.cursor()
+
+    # Get all reservations and calculate days rented (end_date - start_date)
+    cursor.execute('''  
+    SELECT *, 
+           (julianday(end_date) - julianday(start_date)) AS days_rented
+    FROM Reservations
+    ''')
+
+    reservations = [dict(row) for row in cursor.fetchall()]
+
+    connection.close()
+    return reservations
+
+# Get a reservation by id with days rented (end_date - start_date)
+def db_get_reservation(reservation_id):
+    connection = create_connection()
+
+    cursor = connection.cursor()
+    # Get reservation and calculate days rented (end_date - start_date)
+    cursor.execute('''
+    SELECT *, 
+           (julianday(end_date) - julianday(start_date)) AS days_rented 
+    FROM Reservations 
+    WHERE id = ?
+    ''', (reservation_id,))
+    reservation = cursor.fetchone()
+
+    connection.close()
+    return dict(reservation) if reservation else None
+
+# Make a reservation 
+def db_make_reservation(guest_id, room_id, season_id, start_date, end_date):
+    connection = create_connection()
+
+    cursor = connection.cursor()
+    cursor.execute('INSERT INTO Reservations (guest_id, room_id, season_id, start_date, end_date) VALUES (?, ?, ?, ?, ?)',
+                    (guest_id, room_id, season_id, start_date, end_date))
+
+    connection.commit()
+    connection.close()
+</file>
+
+<file path="../ReservationService/api/reservation_routes.py">
+from flask import Blueprint, jsonify, request
+import os, requests
+from repositories.reservation_repository import (
+    db_get_reservations, 
+    db_get_reservation,
+    db_make_reservation,
+)
+
+GUEST_SERVICE_URL = os.getenv('GUEST_SERVICE_URL')
+ROOM_INVENTORY_SERVICE_URL = os.getenv('ROOM_INVENTORY_SERVICE_URL')
+
+# Blueprint for reservation routes
+reservation_routes = Blueprint('reservation_routes', __name__)
+
+# GET all reservations with guest and room details
+@reservation_routes.route('', methods=['GET'])
+def get_reservations():
+    try:
+        reservations = db_get_reservations()
+        
+        # Get guest and room details for each reservation with helper function and list comprehension
+        response_list = [ _get_reservation_with_details(reservation) for reservation in reservations ]
+
+        return jsonify(response_list), 200 if response_list else 404
+    except Exception as e:
+        return jsonify({"error": str(e)}), 500
+
+# GET a reservation by id with guest and room details
+@reservation_routes.route('/<int:reservation_id>', methods=['GET'])
+def get_reservation(reservation_id):
+    try:
+        reservation = db_get_reservation(reservation_id)
+        response = _get_reservation_with_details(reservation)
+        return jsonify(response), 200 if response else 404
+    except Exception as e:
+        return jsonify({"error": str(e)}), 500
+
+# POST a new reservation
+@reservation_routes.route('/new', methods=['POST'])
+def new_reservation():
+    try:
+        data = request.json()
+        guest_id = data.get('guest_id')
+        room_id = data.get('room_id')
+        season_id = data.get('season_id')
+        start_date = data.get('start_date')
+        end_date = data.get('end_date')
+
+        if not guest_id or not room_id or not season_id or not start_date or not end_date:
+            return jsonify({"error": "Missing required fields"}), 400
+
+        # make reservation
+        db_make_reservation(guest_id, room_id, season_id, start_date, end_date)
+        return jsonify({"message": "Reservation made successfully"}), 201
+    except Exception as e:
+        return jsonify({"error": str(e)}), 500
+
+
+# ------------------------------ Helper Functions ------------------------------ #
+
+# Helper function to get guest and room details for all reservations
+def _get_reservation_with_details(reservation):
+    try:
+        if not reservation:
+            raise Exception("Reservation not found")
+
+        # Get guest information from guest service
+        guest_response = requests.get(f'{GUEST_SERVICE_URL}/api/v1/guests/{reservation["guest_id"]}')
+        guest_information = guest_response.json()
+        
+        # Get room information from room inventory service
+        room_response = requests.get(f'{ROOM_INVENTORY_SERVICE_URL}/api/v1/rooms/{reservation["room_id"]}')
+        room_information = room_response.json()
+        
+        return _format_reservation_response(
+            reservation, 
+            guest_information, 
+            room_information
+        )
+    except Exception as e:
+        return {"error": str(e)}
+
+# Helper function to format reservation response
+def _format_reservation_response(reservation, guest_info, room_info):
+    try:
+        if not guest_info or not room_info:
+            raise Exception("Guest or room information not found")
+        
+        return {
+        "reservation_id": reservation["id"],
+        "guest": {
+            "guest_id": guest_info.get("id"),
+            "first_name": guest_info.get("first_name"),
+            "last_name": guest_info.get("last_name"),
+            "country": guest_info.get("country"),
+        },
+        "room": {
+            "room_id": room_info.get("id"),
+            "room_type": room_info.get("type_name"),
+        },
+        "reservation_details": {
+            "start_date": reservation.get("start_date"),
+            "end_date": reservation.get("end_date"),
+            "price": reservation.get("price"),
+            "days_rented": int(reservation.get("days_rented")), # Convert to integer
+        }
+    }
+    except Exception as e:
+        return {"error": str(e)}
+</file>
+

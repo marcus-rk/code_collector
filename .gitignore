@@ -1,0 +1,38 @@
+# Python cache files
+__pycache__/
+*.py[cod]
+
+# Virtual environment directories
+.venv/
+env/
+venv/
+
+# Distribution / packaging
+build/
+dist/
+*.egg-info/
+
+# IDE and editor files
+.vscode/
+.idea/
+*.swp
+*.swo
+*.DS_Store
+
+# Jupyter Notebook checkpoints
+.ipynb_checkpoints
+
+# Python test results
+nosetests.xml
+coverage.xml
+*.cover
+*.log
+*.pytest_cache/
+
+# Miscellaneous
+*.csv
+*.tmp
+*.log
+*.out
+*.pdb
+*.pyo
