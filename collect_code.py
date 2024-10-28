@@ -16,7 +16,11 @@ INCLUDED_EXTENSIONS = ['.py', '.txt']  # Keeping it as a list
 
 def is_excluded_file(file_name, dir_path):
     """Check if a file or directory should be excluded based on predefined criteria."""
-    return file_name in EXCLUDED_FILES or any(excluded_dir in dir_path for excluded_dir in EXCLUDED_DIRS)
+    full_path = os.path.join(dir_path, file_name)  # Construct the full path
+    return (
+        file_name in EXCLUDED_FILES or
+        any(os.path.commonpath([full_path, os.path.join(dir_path, excluded_dir)]) == os.path.join(dir_path, excluded_dir) for excluded_dir in EXCLUDED_DIRS)
+    )
 
 def is_included_extension(file_name):
     """Check if a file has an extension that should be included."""
