@@ -236,6 +236,8 @@ After you set up either the alias or the shell script, test it to ensure it work
     collect_code ../ReservationService codebase.txt
     ```
 
+---
+
 ### To-Do: **The Great Code Cleanup**
 
 - ✨ **Auto-Delete Feature** – After you’re done with the output file, it’ll vanish like magic, leaving your workspace spotless. Access your insights instantly, minus the digital clutter!
