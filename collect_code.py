@@ -1,6 +1,7 @@
 import os
 import sys
 import time
+import subprocess  # Import subprocess for opening files
 
 # ============================
 # Configuration (modifiable)
@@ -43,8 +44,23 @@ def print_summary(summary, output_file, base_dir):
     print(f'Files collected: {summary["files"]}. That’s *file-tastic*')
     print(f'Total lines: {summary["lines"]}. Yikes!')
     print(f'Time taken? Just {summary["time"]:.2f} seconds - light work!')
-    print(f'My masterpiece can be found here: {output_file_path}. Surely there is no mistakes, right?')
+    print(f'My masterpiece can be found here: {output_file_path}. Surely there are no mistakes, right?')
     print('═' * 50)
+
+    # Open the output file after processing
+    open_output_file(output_file_path)
+
+def open_output_file(file_path):
+    """Open the output file using the default application for the file type."""
+    try:
+        if sys.platform == "win32":  # Windows
+            os.startfile(file_path)
+        elif sys.platform == "darwin":  # macOS
+            subprocess.run(["open", file_path])
+        else:  # Linux and other Unix-like systems
+            subprocess.run(["xdg-open", file_path])
+    except Exception as e:
+        print(f"Could not open the output file: {e}")
 
 # ============================
 # Main Code Collection Logic
