@@ -2,15 +2,7 @@ import os
 import sys
 import time
 import subprocess
-
-# ============================
-# Configuration (modifiable)
-# ============================
-
-
-EXCLUDED_FILES = {'international_names_with_rooms_1000.csv'} 
-EXCLUDED_DIRS = {'.venv', 'dist-info'} 
-INCLUDED_EXTENSIONS = ['.py', '.txt']
+from config import EXCLUDED_FILES, EXCLUDED_DIRS, INCLUDED_EXTENSIONS
 
 # ============================
 # Utility Functions
