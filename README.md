@@ -4,11 +4,11 @@
 
 ## Overview
 
-**Code Collector** is a Python script that makes wrangling your source code a breeze! It compiles files from your project directory into a single text file, all wrapped up in **XML tags** for better readability and performance for LLMs. 
+**Code Collector** is a Python script that compiles files from your project directory into a single text file, all wrapped up in **XML tags** for better readability and performance for LLMs. 
 
 - This whole idea sprouted from a frustrating moment when I realized how much **time and energy** it takes to feed language models (LLMs) like ChatGPT 4o or Claude AI Sonna with code snippets from projects that have a "great" folder structure. Sure, it’s nice to have everything organized, but good luck copying and pasting all that code from multiple folders!
 
-- With **Code Collector**, I aimed to give LLMs the organized, structured input they need to truly shine. It’s all about making the codebase easier to analyze and process, so you can focus on the fun stuff—like coding! Learn more about this in the sections [Why XML Tags Matter](#why-xml-tags-matter-) and [Learn More About XML + AI](#learn-more-about-xml--ai-)
+- With **Code Collector**, I aimed to give LLMs the organized, structured input they need to truly shine. It’s all about making the codebase easier to analyze and process for the LLM, so you can focus on the fun stuff—like coding! Learn more about this in the sections [Why XML Tags Matter](#why-xml-tags-matter-) and [Learn More About XML + AI](#learn-more-about-xml--ai-)
 
 And here’s the best part: you can run the **wrapitup** command right from your terminal like a coding wizard! 🪄✨
 
@@ -47,8 +47,9 @@ And here’s the best part: you can run the **wrapitup** command right from your
 
 ## 🛠️ Requirements
 
-- Python 3.x installed on your system.
-- Basic understanding of command line usage.
+- [Python 3.x](https://www.python.org/downloads/) installed on your system.
+- Basic understanding of [command line usage](https://www.codecademy.com/articles/command-line-101).
+- [Git](https://git-scm.com/downloads) installed on your system.
 
 ## Installation
 
@@ -146,6 +147,7 @@ This guide will help you set up `wrapitup` as a system-wide command, so you can 
 ### Prerequisites
 
 - [Python 3](https://www.python.org/downloads/) (3.7 or higher recommended)
+- Basic understanding of [command line usage](https://www.codecademy.com/articles/command-line-101).
 - [Git](https://git-scm.com/downloads) (for downloading the script)
 - `collect_code.py` script from the [code_collector repository](https://github.com/marcus-rk/code_collector.git)
 
