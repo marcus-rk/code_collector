@@ -177,9 +177,12 @@ Clone repo, move script, and make executable
 ```bash
 git clone https://github.com/marcus-rk/code_collector.git && \
 mv code_collector/collect_code.py ~/bin/ && \
+mv code_collector/config.py ~/bin/ && \  # Move config.py to ~/bin
 chmod +x ~/bin/collect_code.py && \
+chmod +x ~/bin/config.py && \
 rm -rf code_collector
 ```
+
 
 That's it! You can now use `wrapitup` from anywhere.
 
@@ -189,12 +192,9 @@ That's it! You can now use `wrapitup` from anywhere.
 
 # Create Scripts directory and add to PATH
 ```powershell
-mkdir $HOME\Scripts
-[Environment]::SetEnvironmentVariable(
-    "Path",
-    [Environment]::GetEnvironmentVariable("Path", "User") + ";%USERPROFILE%\Scripts",
-    "User"
-)
+mkdir $HOME\bin
+$env:Path += ";$HOME\bin"
+[Environment]::SetEnvironmentVariable("Path", $env:Path, [EnvironmentVariableTarget]::User)
 ```
 
 #### 2. Install Script and Create Batch File
@@ -202,10 +202,10 @@ mkdir $HOME\Scripts
 Clone repo, move script, create batch file
 ```powershell
 git clone https://github.com/marcus-rk/code_collector.git
-move code_collector\collect_code.py $HOME\Scripts\
-echo @echo off > $HOME\Scripts\wrapitup.bat
-echo python "%USERPROFILE%\Scripts\collect_code.py" %* >> $HOME\Scripts\wrapitup.bat
+Move-Item code_collector\collect_code.py $HOME\bin\
+Move-Item code_collector\config.py $HOME\bin\
 Remove-Item -Recurse -Force code_collector
+echo python "%USERPROFILE%\bin\collect_code.py" %* > $HOME\bin\wrapitup.bat
 ```
 
 Restart your terminal for changes to take effect.
