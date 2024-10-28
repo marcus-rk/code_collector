@@ -99,7 +99,7 @@ Feel free to modify the exclusion lists as needed in 'collect_code.py'.
     *   At the bottom of the file, add the alias. Make sure to replace `/path/to/your/script` with the full path to your `collect_code.py` script. For example:
     
     ```bash
-    alias collect_code='python3 /Users/marcus_rk/Softwarearkitektur/Hotel_Kong_Arthur/code_collector/collect_code.py'
+    alias collect_code='python3 /path/to/your/scriptcollect_code.py'
     ```
     
 4.  **Save and Exit**:
@@ -219,6 +219,9 @@ After you set up either the alias or the shell script, test it to ensure it work
     collect_code ../ReservationService codebase.txt
     ```
 
+### To-Do: **The Great Code Cleanup**
+
+- ✨ **Auto-Delete Feature** – After you’re done with the output file, it’ll vanish like magic, leaving your workspace spotless. Access your insights instantly, minus the digital clutter!
 
 ## 📝 License
 
