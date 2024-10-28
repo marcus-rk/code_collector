@@ -100,6 +100,7 @@ def open_output_file(file_path):
             process = subprocess.Popen(['xdg-open', file_path])
 
         # Wait for the file to be closed before proceeding
+        time.sleep(0.5) # temp solution
         process.wait()
 
         # This code only runs after the user closes the file/application
