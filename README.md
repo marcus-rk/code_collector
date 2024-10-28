@@ -10,7 +10,7 @@
 
 - With **Code Collector**, I aimed to give LLMs the organized, structured input they need to truly shine. It’s all about making the codebase easier to analyze and process, so you can focus on the fun stuff—like coding! Learn more about this in the sections [Why XML Tags Matter](#why-xml-tags-matter-) and [Learn More About XML + AI](#learn-more-about-xml--ai-)
 
-And here’s the best part: you can run the **Code Collector** command right from your terminal like a coding wizard! 🪄✨
+And here’s the best part: you can run the **wrapitup** command right from your terminal like a coding wizard! 🪄✨
 
 ## Features
 
@@ -55,7 +55,7 @@ And here’s the best part: you can run the **Code Collector** command right fro
 1. **Clone the Repository**:
    ```bash
    git clone https://github.com/marcus-rk/code_collector.git
-   cd code-collector
+   cd code_collector
    ```
 
 2. **Navigate to the Project Directory**: Make sure you're in the directory where the `collect_code.py` file is located.
@@ -77,7 +77,9 @@ INCLUDED_EXTENSIONS = {'.py', '.txt'}                         # File types to in
 
 ---
 
-## Usage
+## Usage with custom EXCLUDED and INCLUDED
+
+Check out [Setting up `collect_code` as a Terminal Command](#setting-up-collect_code-as-a-terminal-command), if you don't want to change the excluded and included files and keep the default.
 
 1. **Run the Script**: Open your terminal and navigate to the directory where the script 'code_collect.py' is located. Use the following command:
 
@@ -101,7 +103,6 @@ By default, the script excludes:
 Feel free to modify the exclusion lists as needed in 'collect_code.py'.
 
 ---
-
 
 ## Why XML Tags Matter 🎯
 
@@ -135,7 +136,6 @@ Want to dive deeper into how XML tags enhance AI comprehension? Check out these 
   - Advanced strategies for AI interaction
   - Tips for better code analysis
   - Practical applications
-
 
 ---
 
@@ -218,7 +218,6 @@ wrapitup
 
 Example:
 ```bash
-wrapitup  ../MyProject my_project_codebase.txt
 wrapitup  ../MyProject
 ```
 
