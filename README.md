@@ -18,6 +18,7 @@ And here’s the best part: you can run the **Code Collector** command right fro
 - **Exclusion Filters**: Easily configure which files and directories to exclude.
 - **File Output**: Generates a structured text file with the contents of the collected code.
 - **Summary Report**: At the end of the process, a summary is printed that includes the total number of folders, files, lines of code, and the time taken for the collection.
+- **Auto Open & Clean**: Run the command, and it automatically opens the output file for you. Once you're done, it will vanish like magic, keeping your workspace tidy without any manual cleanup!
 
 ---
 
@@ -160,8 +161,8 @@ git --version
 
 #### 1. Initial Setup (One Command)
 
+Create bin directory, add to PATH, and apply changes
 ```bash
-# Create bin directory, add to PATH, and apply changes
 mkdir -p ~/bin && \
 echo 'export PATH="$HOME/bin:$PATH"' >> ~/.zshrc && \
 echo 'alias wrapitup="python3 ~/bin/collect_code.py"' >> ~/.zshrc && \
@@ -170,8 +171,8 @@ source ~/.zshrc
 
 #### 2. Install Script
 
+Clone repo, move script, and make executable
 ```bash
-# Clone repo, move script, and make executable
 git clone https://github.com/marcus-rk/code_collector.git && \
 mv code_collector/collect_code.py ~/bin/ && \
 chmod +x ~/bin/collect_code.py && \
@@ -184,8 +185,8 @@ That's it! You can now use `wrapitup` from anywhere.
 
 #### 1. Initial Setup (PowerShell as Administrator)
 
-```powershell
 # Create Scripts directory and add to PATH
+```powershell
 mkdir $HOME\Scripts
 [Environment]::SetEnvironmentVariable(
     "Path",
@@ -196,12 +197,12 @@ mkdir $HOME\Scripts
 
 #### 2. Install Script and Create Batch File
 
+Clone repo, move script, create batch file
 ```powershell
-# Clone repo, move script, create batch file
 git clone https://github.com/marcus-rk/code_collector.git
 move code_collector\collect_code.py $HOME\Scripts\
-echo @echo off > $HOME\Scripts\collect_code.bat
-echo python "%USERPROFILE%\Scripts\collect_code.py" %* >> $HOME\Scripts\collect_code.bat
+echo @echo off > $HOME\Scripts\wrapitup.bat
+echo python "%USERPROFILE%\Scripts\collect_code.py" %* >> $HOME\Scripts\wrapitup.bat
 Remove-Item -Recurse -Force code_collector
 ```
 
@@ -212,12 +213,13 @@ Restart your terminal for changes to take effect.
 The command works the same way on both operating systems:
 
 ```bash
-collect_code  
+wrapitup 
 ```
 
 Example:
 ```bash
-collect_code ../MyProject codebase.txt
+wrapitup  ../MyProject my_project_codebase.txt
+wrapitup  ../MyProject
 ```
 
 ### Troubleshooting
@@ -229,10 +231,6 @@ If the command isn't recognized after installation:
 4. Ensure the batch file was created correctly (Windows)
 
 ---
-
-### Future features: **The Great Code Cleanup**
-
-- ✨ **Auto-Delete Feature** – After you’re done with the output file, it’ll vanish like magic, leaving your workspace spotless. Access your insights instantly, minus the digital clutter!
 
 ## 📝 License
 
