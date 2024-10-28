@@ -22,6 +22,24 @@ And here’s the best part: you can run **Code Collector** right from your termi
 
 ---
 
+## Table of Contents
+
+1. [Overview](#overview)
+2. [Features](#features)
+3. [Requirements](#-requirements)
+4. [Installation](#installation)
+5. [Configuration](#⚙️-configuration)
+6. [Usage](#usage)
+7. [Exclusions](#❌-exclusions)
+8. [Using `collect_code` as a Custom Terminal Command](#using-collect_code-as-a-custom-terminal-command)
+   - [Method 1: Using an Alias](#method-1-using-an-alias)
+   - [Method 2: Creating a Shell Script](#method-2-creating-a-shell-script)
+9. [Testing the Command](#testing-the-command)
+10. [To-Do: The Great Code Cleanup](#to-do-the-great-code-cleanup)
+11. [License](#📝-license)
+
+---
+
 ## 🛠️ Requirements
 
 - Python 3.x installed on your system.
