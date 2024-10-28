@@ -4,13 +4,13 @@
 
 ## Overview
 
-**Code Collector** is a Python script that makes wrangling your source code a breeze! It compiles files from your project directory into a single text file, all wrapped up in **XML tags** for better readability by LLMs. 
+**Code Collector** is a Python script that makes wrangling your source code a breeze! It compiles files from your project directory into a single text file, all wrapped up in **XML tags** for better readability and performance for LLMs. 
 
 - This whole idea sprouted from a frustrating moment when I realized how much **time and energy** it takes to feed language models (LLMs) like ChatGPT 4o or Claude AI Sonna with code snippets from projects that have a "great" folder structure. Sure, it’s nice to have everything organized, but good luck copying and pasting all that code from multiple folders!
 
-- With **Code Collector**, I aimed to give LLMs the organized, structured input they need to truly shine. It’s all about making the codebase easier to analyze and process, so you can focus on the fun stuff—like coding!
+- With **Code Collector**, I aimed to give LLMs the organized, structured input they need to truly shine. It’s all about making the codebase easier to analyze and process, so you can focus on the fun stuff—like coding! Learn more about this in the sections [Why XML Tags Matter](#why-xml-tags-matter-) and [Learn More About XML + AI](#learn-more-about-xml--ai-)
 
-And here’s the best part: you can run **Code Collector** right from your terminal like a coding wizard! 🪄✨
+And here’s the best part: you can run the **Code Collector** command right from your terminal like a coding wizard! 🪄✨
 
 ## Features
 
@@ -27,15 +27,20 @@ And here’s the best part: you can run **Code Collector** right from your termi
 2. [Features](#features)
 3. [Requirements](#-requirements)
 4. [Installation](#installation)
-5. [Configuration](#⚙️-configuration)
+5. [Configuration](#configuration)
 6. [Usage](#usage)
 7. [Exclusions](#❌-exclusions)
-8. [Using `collect_code` as a Custom Terminal Command](#using-collect_code-as-a-custom-terminal-command)
-   - [Method 1: Using an Alias](#method-1-using-an-alias)
-   - [Method 2: Creating a Shell Script](#method-2-creating-a-shell-script)
-9. [Testing the Command](#testing-the-command)
-10. [To-Do: The Great Code Cleanup](#to-do-the-great-code-cleanup)
-11. [License](#📝-license)
+8. [Why XML Tags Matter](#why-xml-tags-matter-)
+9. [Learn More About XML + AI](#learn-more-about-xml--ai-)
+10. [Setting up `collect_code` as a Terminal Command](#setting-up-collect_code-as-a-terminal-command)
+    - [Prerequisites](#prerequisites)
+    - [Verifying Prerequisites](#verifying-prerequisites)
+    - [macOS Setup](#macos-setup)
+    - [Windows Setup](#windows-setup)
+11. [Testing the Command](#testing-the-command)
+12. [Troubleshooting](#troubleshooting)
+13. [Future features: The Great Code Cleanup](#future-features-the-great-code-cleanup)
+14. [License](#📝-license)
 
 ---
 
@@ -93,6 +98,43 @@ By default, the script excludes:
 - Any files in directories named `dist-info` (which are created for Python package metadata)
 
 Feel free to modify the exclusion lists as needed in 'collect_code.py'.
+
+---
+
+
+## Why XML Tags Matter 🎯
+
+When **Code Collector** processes your project, it transforms scattered files into a structured XML format that helps LLM models:
+
+* **Maintain Context**: 
+  - Keep track of file locations
+  - Understand code relationships
+  - Follow project organization
+
+* **Enhance Understanding**: 
+  - Clearer project structure
+  - Better code comprehension
+  - More accurate analysis
+
+* **Improve AI Responses**: 
+  - More precise answers
+  - Better code suggestions
+  - Clearer explanations
+
+### Learn More About XML + AI 📚
+
+Want to dive deeper into how XML tags enhance AI comprehension? Check out these resources:
+
+* [Anthropic's Guide to XML Tags](https://docs.anthropic.com/en/docs/build-with-claude/prompt-engineering/use-xml-tags)
+  - Learn the official best practices
+  - Understand why structure matters
+  - See real-world examples
+
+* [Optimizing Claude AI Outputs](https://vectorshift.ai/blog/how-to-get-better-outputs-with-anthropic-s-claude-ai-chatbots)
+  - Advanced strategies for AI interaction
+  - Tips for better code analysis
+  - Practical applications
+
 
 ---
 
