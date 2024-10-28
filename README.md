@@ -138,9 +138,9 @@ Want to dive deeper into how XML tags enhance AI comprehension? Check out these 
 
 ---
 
-## Setting up `collect_code` as a Terminal Command
+## Setting up `wrapitup` as a Terminal Command
 
-This guide will help you set up `collect_code` as a system-wide command, so you can invoke its magic from any directory on your system!
+This guide will help you set up `wrapitup` as a system-wide command, so you can invoke its magic from any directory on your system!
 
 ### Prerequisites
 
@@ -164,7 +164,7 @@ git --version
 # Create bin directory, add to PATH, and apply changes
 mkdir -p ~/bin && \
 echo 'export PATH="$HOME/bin:$PATH"' >> ~/.zshrc && \
-echo 'alias collect_code="python3 ~/bin/collect_code.py"' >> ~/.zshrc && \
+echo 'alias wrapitup="python3 ~/bin/collect_code.py"' >> ~/.zshrc && \
 source ~/.zshrc
 ```
 
@@ -178,7 +178,7 @@ chmod +x ~/bin/collect_code.py && \
 rm -rf code_collector
 ```
 
-That's it! You can now use `collect_code` from anywhere.
+That's it! You can now use `wrapitup` from anywhere.
 
 ### Windows Setup
 
